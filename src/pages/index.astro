@@ -1,12 +1,9 @@
 ---
+import Page from '../components/Page.astro';
+import Base from '../layouts/Base.astro';
+import { content } from '../lib/i18n';
+
+const cv = content.pt;
 ---
 
-<html lang="pt-BR">
-  <head>
-    <meta charset="utf-8" />
-    <title>Matheus Amon</title>
-  </head>
-  <body>
-    <h1>Matheus Amon</h1>
-  </body>
-</html>
+<Base cv={cv}><Page cv={cv} /></Base>

@@ -1,0 +1,55 @@
+---
+import '@fontsource-variable/inter-tight/wght.css';
+import '@fontsource/jetbrains-mono/latin-400.css';
+import '../styles/base.css';
+import type { CV } from '../content/types';
+import { LOCALES, htmlLang, ogLocale, paths } from '../lib/i18n';
+import { personJsonLd, serializeJsonLd } from '../lib/seo';
+import { withBase } from '../lib/url';
+
+interface Props {
+  cv: CV;
+}
+
+const { cv } = Astro.props;
+if (!Astro.site) throw new Error('Defina `site` em astro.config.mjs');
+const site = Astro.site;
+const abs = (path: string) => new URL(withBase(path), site).href;
+const canonical = abs(paths[cv.locale]);
+const ogImage = abs(cv.meta.ogImage);
+const jsonLd = serializeJsonLd(personJsonLd(cv, canonical, ogImage));
+---
+
+<!doctype html>
+<html lang={htmlLang[cv.locale]}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{cv.meta.title}</title>
+    <meta name="description" content={cv.meta.description} />
+    <meta name="author" content={cv.person.name} />
+    <meta name="theme-color" content="#FAFAF8" />
+    <link rel="canonical" href={canonical} />
+    {LOCALES.map((locale) => <link rel="alternate" hreflang={htmlLang[locale]} href={abs(paths[locale])} />)}
+    <link rel="alternate" hreflang="x-default" href={abs(paths.pt)} />
+    <link rel="icon" href={withBase('/favicon.svg')} type="image/svg+xml" />
+    <meta property="og:type" content="profile" />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:title" content={cv.meta.title} />
+    <meta property="og:description" content={cv.meta.description} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={cv.meta.ogAlt} />
+    <meta property="og:locale" content={ogLocale[cv.locale]} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={cv.meta.title} />
+    <meta name="twitter:description" content={cv.meta.description} />
+    <meta name="twitter:image" content={ogImage} />
+    <script is:inline type="application/ld+json" set:html={jsonLd} />
+  </head>
+  <body>
+    <a class="skip" href="#main">{cv.ui.skipToContent}</a>
+    <slot />
+  </body>
+</html>

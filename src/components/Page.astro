@@ -1,0 +1,13 @@
+---
+import type { CV } from '../content/types';
+import Header from './Header.astro';
+
+interface Props {
+  cv: CV;
+}
+
+const { cv } = Astro.props;
+---
+
+<Header cv={cv} />
+<main id="main"></main>

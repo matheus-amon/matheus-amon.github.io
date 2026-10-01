@@ -1,0 +1,48 @@
+---
+import type { CV, Locale } from '../content/types';
+import { LOCALES, htmlLang, paths } from '../lib/i18n';
+import { withBase } from '../lib/url';
+
+interface Props {
+  cv: CV;
+}
+
+const { cv } = Astro.props;
+const { ui, person } = cv;
+const navItems = [
+  { id: 'experience', label: ui.nav.experience },
+  { id: 'projects', label: ui.nav.projects },
+  { id: 'stack', label: ui.nav.stack },
+  { id: 'contact', label: ui.nav.contact },
+];
+const langLabel: Record<Locale, string> = { pt: 'PT', en: 'EN' };
+---
+
+<header class="site-header">
+  <div class="shell header-inner">
+    <a class="brand" href={withBase(paths[cv.locale])}>{person.shortName}</a>
+    <nav class="nav" aria-label={ui.menu}>
+      <ul id="nav-list" class="nav-list">
+        {navItems.map((item) => <li><a class="link" href={`#${item.id}`}>{item.label}</a></li>)}
+      </ul>
+    </nav>
+    <div class="header-actions">
+      <div class="lang" role="group" aria-label={ui.languageLabel}>
+        {
+          LOCALES.map((locale) => (
+            <a
+              href={withBase(paths[locale])}
+              hreflang={htmlLang[locale]}
+              lang={htmlLang[locale]}
+              aria-current={locale === cv.locale ? 'page' : undefined}
+            >
+              {langLabel[locale]}
+            </a>
+          ))
+        }
+      </div>
+      <a class="btn btn-small btn-primary" href={withBase(person.cvPdf)} download>{ui.cvShort}</a>
+      <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="nav-list">{ui.menu}</button>
+    </div>
+  </div>
+</header>
