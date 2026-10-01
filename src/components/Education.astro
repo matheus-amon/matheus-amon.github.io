@@ -1,0 +1,39 @@
+---
+import type { CV } from '../content/types';
+
+interface Props {
+  cv: CV;
+}
+
+const { cv } = Astro.props;
+const { ui } = cv;
+---
+
+<section id="education" class="section" aria-labelledby="education-title">
+  <div class="shell">
+    <header class="section-head">
+      <p class="eyebrow">{ui.educationEyebrow}</p>
+      <h2 id="education-title" class="section-title">{ui.educationHeading}</h2>
+    </header>
+    <div class="edu-grid">
+      <div class="reveal">
+        <h3 class="edu-label mono">{ui.educationLabel}</h3>
+        <p class="edu-school">{cv.education.school}</p>
+        <p class="muted">{cv.education.course} · {cv.education.location}</p>
+      </div>
+      <div class="reveal">
+        <h3 class="edu-label mono">{ui.certificationsLabel}</h3>
+        {
+          cv.certifications.map((group) => (
+            <div class="cert-group">
+              <p class="cert-issuer">{group.issuer}</p>
+              <ul class="cert-items">
+                {group.items.map((item) => <li>{item}</li>)}
+              </ul>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </div>
+</section>

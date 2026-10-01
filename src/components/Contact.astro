@@ -1,0 +1,26 @@
+---
+import type { CV } from '../content/types';
+import { withBase } from '../lib/url';
+import Icon from './Icon.astro';
+
+interface Props {
+  cv: CV;
+}
+
+const { cv } = Astro.props;
+const { person, ui } = cv;
+---
+
+<section id="contact" class="band-dark contact" aria-labelledby="contact-title">
+  <div class="shell">
+    <p class="eyebrow">{ui.contactEyebrow}</p>
+    <h2 id="contact-title" class="contact-title">{ui.contactHeading}</h2>
+    <p class="contact-text">{ui.contactText}</p>
+    <a class="contact-email link" href={`mailto:${person.email}`}>{person.email}</a>
+    <div class="contact-actions">
+      <a class="btn btn-light" href={withBase(person.cvPdf)} download><Icon name="download" />{ui.downloadCv}</a>
+      <a class="btn btn-outline-light" href={person.linkedin} target="_blank" rel="me noopener noreferrer"><Icon name="linkedin" />LinkedIn</a>
+      <a class="btn btn-outline-light" href={person.github} target="_blank" rel="me noopener noreferrer"><Icon name="github" />GitHub</a>
+    </div>
+  </div>
+</section>

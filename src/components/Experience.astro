@@ -1,0 +1,56 @@
+---
+import type { CV } from '../content/types';
+
+interface Props {
+  cv: CV;
+}
+
+const { cv } = Astro.props;
+const { ui } = cv;
+---
+
+<section id="experience" class="section" aria-labelledby="experience-title">
+  <div class="shell">
+    <header class="section-head">
+      <p class="eyebrow">{ui.experienceEyebrow}</p>
+      <h2 id="experience-title" class="section-title">{ui.experienceHeading}</h2>
+    </header>
+    {
+      cv.experience.map((company) => (
+        <article class="company">
+          <header class="company-head reveal">
+            <h3 class="company-name">{company.name}</h3>
+            <span class="mono muted">{company.location}</span>
+          </header>
+          <ol class="timeline" data-timeline>
+            {company.roles.map((role) => (
+              <li class="role reveal">
+                <span class="role-dot" aria-hidden="true" />
+                <div class="role-head">
+                  <h4 class="role-title">
+                    {role.title}
+                    {role.current && <span class="badge">{ui.current}</span>}
+                  </h4>
+                  <p class="role-period mono">{role.period}</p>
+                </div>
+                <ul class="bullets">
+                  {role.bullets.map((bullet) => <li>{bullet}</li>)}
+                </ul>
+                <ul class="tags" aria-label="Stack">
+                  {role.tags.map((tag) => <li>{tag}</li>)}
+                </ul>
+              </li>
+            ))}
+          </ol>
+        </article>
+      ))
+    }
+    <aside class="earlier reveal" aria-labelledby="earlier-title">
+      <h3 id="earlier-title" class="earlier-title">{ui.earlierHeading}</h3>
+      <p class="earlier-name">
+        {cv.earlier.name} <span class="mono muted">· {cv.earlier.period} · {cv.earlier.location}</span>
+      </p>
+      <p class="muted">{cv.earlier.summary}</p>
+    </aside>
+  </div>
+</section>

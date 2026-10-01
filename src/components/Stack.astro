@@ -1,0 +1,31 @@
+---
+import type { CV } from '../content/types';
+
+interface Props {
+  cv: CV;
+}
+
+const { cv } = Astro.props;
+const { ui } = cv;
+---
+
+<section id="stack" class="section band-dark" aria-labelledby="stack-title">
+  <div class="shell">
+    <header class="section-head">
+      <p class="eyebrow">{ui.stackEyebrow}</p>
+      <h2 id="stack-title" class="section-title">{ui.stackHeading}</h2>
+    </header>
+    <div class="skill-grid">
+      {
+        cv.skills.map((group) => (
+          <div class="skill-group reveal">
+            <h3 class="skill-label mono">{group.label}</h3>
+            <ul class="chips">
+              {group.items.map((item) => <li>{item}</li>)}
+            </ul>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>

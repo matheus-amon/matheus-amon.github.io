@@ -1,0 +1,17 @@
+---
+import type { CV } from '../content/types';
+
+interface Props {
+  cv: CV;
+}
+
+const { cv } = Astro.props;
+const year = new Date().getFullYear();
+---
+
+<footer class="band-dark site-footer">
+  <div class="shell footer-inner">
+    <span>© {year} {cv.person.name}</span>
+    <span>{cv.ui.builtWith}</span>
+  </div>
+</footer>

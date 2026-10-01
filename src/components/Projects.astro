@@ -1,0 +1,47 @@
+---
+import type { CV } from '../content/types';
+import Icon from './Icon.astro';
+
+interface Props {
+  cv: CV;
+}
+
+const { cv } = Astro.props;
+const { ui } = cv;
+---
+
+<section id="projects" class="section section-flush-top" aria-labelledby="projects-title">
+  <div class="shell">
+    <header class="section-head">
+      <p class="eyebrow">{ui.projectsEyebrow}</p>
+      <h2 id="projects-title" class="section-title">{ui.projectsHeading}</h2>
+    </header>
+    <ul class="cards">
+      {
+        cv.projects.map((project) => (
+          <li class="card reveal">
+            <h3 class="card-title">{project.name}</h3>
+            <p class="card-text">{project.description}</p>
+            <ul class="tags" aria-label="Stack">
+              {project.tags.map((tag) => <li>{tag}</li>)}
+            </ul>
+            <div class="card-links">
+              {project.links.map((link) => (
+                <a class="arrow-link" href={link.href} target="_blank" rel="noopener noreferrer">
+                  {link.label}
+                  <Icon name="arrow" />
+                </a>
+              ))}
+            </div>
+          </li>
+        ))
+      }
+    </ul>
+    <p class="see-all">
+      <a class="arrow-link" href={cv.githubAll} target="_blank" rel="noopener noreferrer">
+        {ui.seeAllGithub}
+        <Icon name="arrow" />
+      </a>
+    </p>
+  </div>
+</section>

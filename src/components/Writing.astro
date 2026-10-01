@@ -1,0 +1,34 @@
+---
+import type { CV } from '../content/types';
+import Icon from './Icon.astro';
+
+interface Props {
+  cv: CV;
+}
+
+const { cv } = Astro.props;
+const posts = cv.writing ?? [];
+---
+
+{
+  posts.length > 0 && (
+    <section id="writing" class="section section-flush-top" aria-labelledby="writing-title">
+      <div class="shell">
+        <header class="section-head">
+          <h2 id="writing-title" class="section-title">{cv.ui.writingHeading}</h2>
+        </header>
+        <ul class="posts">
+          {posts.map((post) => (
+            <li class="reveal">
+              <a class="arrow-link" href={post.href} target="_blank" rel="noopener noreferrer">
+                {post.title}
+                <Icon name="arrow" />
+              </a>
+              <span class="mono muted">{post.date}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+  )
+}

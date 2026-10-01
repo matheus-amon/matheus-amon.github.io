@@ -1,6 +1,14 @@
 ---
 import type { CV } from '../content/types';
+import Contact from './Contact.astro';
+import Education from './Education.astro';
+import Experience from './Experience.astro';
+import Footer from './Footer.astro';
 import Header from './Header.astro';
+import Hero from './Hero.astro';
+import Projects from './Projects.astro';
+import Stack from './Stack.astro';
+import Writing from './Writing.astro';
 
 interface Props {
   cv: CV;
@@ -10,4 +18,13 @@ const { cv } = Astro.props;
 ---
 
 <Header cv={cv} />
-<main id="main"></main>
+<main id="main">
+  <Hero cv={cv} />
+  <Experience cv={cv} />
+  <Projects cv={cv} />
+  <Writing cv={cv} />
+  <Stack cv={cv} />
+  <Education cv={cv} />
+  <Contact cv={cv} />
+</main>
+<Footer cv={cv} />
