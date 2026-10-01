@@ -70,6 +70,14 @@ describe.each(PAGE_KEYS)('seções (%s)', (key) => {
     expect(localRefs(html).filter((ref) => ref !== '/' && ref !== '/en/' && !existsSync(distFile(ref)))).toEqual([]);
   });
 
+  test('chips técnicos da stack têm logo; idiomas não', () => {
+    const stack = html.slice(html.indexOf('id="stack"'), html.indexOf('id="education"'));
+    const technical = cv.skills.filter((g) => g.id !== 'languages').flatMap((g) => g.items).length;
+    expect(stack.match(/class="chip-icon/g)?.length).toBe(technical);
+    expect(stack.match(/<svg\b/g)?.length).toBe(technical);
+    expect(stack).toMatch(/class="chip-icon chip-icon--tile"/);
+  });
+
   test('timeline marcada para o JS', () => {
     expect(html).toContain('data-timeline');
     expect(html.match(/class="role reveal"/g)?.length).toBe(3);

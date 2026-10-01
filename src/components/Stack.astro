@@ -1,5 +1,6 @@
 ---
 import type { CV } from '../content/types';
+import { skillIcon } from '../lib/skill-icons';
 
 interface Props {
   cv: CV;
@@ -21,7 +22,15 @@ const { ui } = cv;
           <div class="skill-group reveal">
             <h3 class="skill-label mono">{group.label}</h3>
             <ul class="chips">
-              {group.items.map((item) => <li>{item}</li>)}
+              {group.items.map((item) => {
+                const icon = skillIcon(item);
+                return (
+                  <li class:list={[icon && 'has-icon']}>
+                    {icon && <span class={`chip-icon chip-icon--${icon.kind}`} aria-hidden="true" set:html={icon.svg} />}
+                    {item}
+                  </li>
+                );
+              })}
             </ul>
           </div>
         ))

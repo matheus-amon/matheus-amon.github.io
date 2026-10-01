@@ -89,6 +89,8 @@ As descrições vêm das descrições dos próprios repositórios e não afirmam
 - **Cloud e IA:** AWS (S3, Lambda, Step Functions, SageMaker, Bedrock), FastAPI, LangGraph, RAG
 - **Idiomas:** Português (nativo), Inglês (intermediário)
 
+**Logos (adicionado em 2026-09-30):** cada skill técnica tem um logo colorido de 28 px no chip. AWS usa os ícones oficiais de arquitetura (`aws-icons`, MIT); as demais marcas usam Simple Icons e gilbarbara/logos (CC0) sobre um círculo claro; Microsoft Fabric, SQL e RAG usam um ícone neutro de linha. Idiomas ficam sem ícone. Os SVGs são gerados por `scripts/icons.ts` e embutidos no HTML durante o build.
+
 ### 3.5 Formação e certificações
 
 - UFCG: Geografia (incompleto)

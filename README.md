@@ -20,6 +20,7 @@ bun run verify     # type check + testes + build + testes do build
 | Foto | substitua `src/assets/photo.jpg` (retrato; o recorte é feito por CSS) |
 | CV em PDF | substitua `public/cv-pt.pdf` e `public/cv-en.pdf` |
 | Imagem de prévia (LinkedIn/WhatsApp) | rode `bun run og` depois de mudar título, manchete ou foto |
+| Logos da Stack | ao adicionar uma skill, mapeie o ícone em `scripts/icons.ts` e rode `bun run icons` (o teste falha se faltar ícone) |
 | Cores e fontes | `src/styles/base.css` (tokens em `:root`) |
 | Adicionar artigos | preencha `writing: [{ title, href, date }]` nos dois arquivos de conteúdo; a seção aparece sozinha |
 

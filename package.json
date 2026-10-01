@@ -11,7 +11,8 @@
     "test": "bun test tests/unit",
     "test:build": "bun test tests/build",
     "og": "bun scripts/og.ts",
-    "verify": "bun run check && bun run test && bun run build && bun run test:build"
+    "verify": "bun run check && bun run test && bun run build && bun run test:build",
+    "icons": "bun scripts/icons.ts"
   },
   "dependencies": {
     "@fontsource-variable/inter-tight": "^5.3.0",
@@ -20,8 +21,11 @@
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.10",
+    "@iconify-json/logos": "^1.2.15",
     "@types/bun": "^1.4.2",
+    "aws-icons": "^3.3.0",
     "sharp": "^0.35.5",
+    "simple-icons": "^16.33.0",
     "typescript": "^5.9.0"
   }
 }
