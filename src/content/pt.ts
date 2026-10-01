@@ -106,6 +106,13 @@ export const pt: CV = {
       links: [{ label: 'iceberg-lakehouse', href: 'https://github.com/matheus-amon/iceberg-lakehouse' }],
     },
     {
+      name: 'Podcast ERP',
+      description:
+        'Monorepo TypeScript para operação de podcast: agenda, leads, orçamento e faturamento. Spec-driven, com API em ElysiaJS e Drizzle sobre Postgres, e testes que rodam de verdade no CI.',
+      tags: ['TypeScript', 'Bun', 'ElysiaJS', 'Drizzle', 'Postgres'],
+      links: [{ label: 'podcast', href: 'https://github.com/matheus-amon/podcast' }],
+    },
+    {
       name: 'Data Warehouse stack',
       description:
         'Data warehouse local de ponta a ponta: ambiente com Terraform e docker-compose, orquestração com Airflow e transformação com dbt.',
@@ -115,6 +122,13 @@ export const pt: CV = {
         { label: 'dwh-airflow', href: 'https://github.com/matheus-amon/dwh-airflow' },
         { label: 'dwh-dbt', href: 'https://github.com/matheus-amon/dwh-dbt' },
       ],
+    },
+    {
+      name: 'api-ingest-airflow',
+      description:
+        'Template de pipeline de ingestão sobre Airflow construído em torno de fronteiras de software: cliente de API, um contrato de DTO que valida na construção, orquestrador de serviço e repositório atrás de interface. Com testes e imagem de container.',
+      tags: ['Airflow', 'Python', 'uv', 'pytest', 'Docker'],
+      links: [{ label: 'api-ingest-airflow', href: 'https://github.com/matheus-amon/api-ingest-airflow' }],
     },
     {
       name: 'amon-claw',
