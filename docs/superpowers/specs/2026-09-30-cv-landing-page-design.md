@@ -1,7 +1,7 @@
 # CV Landing Page — Matheus Amon Marçal
 
 **Data:** 2026-09-30
-**Status:** aprovado em conversa; aguardando revisão da spec escrita
+**Status:** aprovada (2026-09-30)
 
 ## 1. Objetivo
 
@@ -11,7 +11,7 @@ Landing page pessoal, de página única, que **complementa** o CV em PDF e causa
 
 - Todo o conteúdo é fiel ao CV e às respostas do Matheus. Nenhum número ou conquista foi inventado.
 - As palavras-chave (headline, resumo, experiência e skills) são as mesmas do CV e do LinkedIn, para dar match nos campos de peso. Isso vem da mentoria com Daniel Romero.
-- Primeira carga com menos de 150 KB (foto e fontes incluídas) e cerca de 2 KB de JS.
+- Orçamento de peso: HTML + CSS + JS + fontes latin usadas < 100 KB; maior variante da foto < 80 KB; JS ~2 KB.
 - Funciona sem JS, com animações desligadas e no celular.
 - Ao colar o link no LinkedIn ou no WhatsApp, aparece uma prévia correta em cada idioma.
 
@@ -34,7 +34,7 @@ O texto final mora em `src/content/pt.ts` e `src/content/en.ts`. A versão EN pa
 |---|---|---|
 | Nome | Matheus Amon Marçal | Matheus Amon Marçal |
 | Título (linha acima da manchete) | Engenheiro de Software, Dados e IA | Software Engineer, Data & AI |
-| Manchete | Construo pipelines de dados e sistemas de IA que rodam em produção, quase de graça. | I build data pipelines and AI systems that run in production — at near-zero cost. |
+| Manchete | Construo pipelines de dados e sistemas de IA que rodam em produção. | I build data pipelines and AI systems that run in production. |
 | Localização | Paraíba, Brasil · Remoto | Paraíba, Brazil · Remote |
 | E-mail | matheus.amon@outlook.com | idem |
 | LinkedIn | https://www.linkedin.com/in/matheus-amon/ | idem |
@@ -120,7 +120,7 @@ As descrições vêm das descrições dos próprios repositórios e não afirmam
 
 Na faixa `ink`, o texto em turquesa usa um tom mais claro (cerca de `#5CC4BD`) para manter contraste AA.
 
-**Tipografia:** Inter Tight (400/600/700) para títulos e corpo; JetBrains Mono (400/500) para datas, tags e título. Ambas self-hosted via `@fontsource`, só com o subset latin.
+**Tipografia:** Inter Tight Variable (um arquivo, ~44 KB latin) para títulos e corpo; JetBrains Mono 400 (~21 KB) para datas, tags e título. Self-hosted via `@fontsource`; o navegador baixa só o subset latin.
 
 **Layout:** coluna de leitura com cerca de 720 px de largura máxima, hero mais largo (texto + foto), manchete de cerca de 56 px no desktop e 36 px no celular, bastante espaço em branco e gutter de 16 px no celular.
 
@@ -155,7 +155,8 @@ cv-landingpage/
 │   ├── pages/index.astro         ← PT em /
 │   ├── pages/en/index.astro      ← EN em /en/
 │   ├── scripts/reveal.ts         ← IntersectionObserver + timeline
-│   └── styles/global.css         ← tokens, base, animações
+│   ├── lib/                      ← i18n.ts, seo.ts, url.ts, timeline.ts, xml.ts
+│   └── styles/                   ← base.css, sections.css, motion.css
 ├── .github/workflows/deploy.yml
 ├── astro.config.mjs              ← site: https://matheus-amon.github.io
 └── README.md
@@ -164,9 +165,10 @@ cv-landingpage/
 **Decisões:**
 
 - **Conteúdo separado do layout.** Os componentes recebem um objeto `CV` e não contêm texto fixo, salvo rótulos de UI, que também ficam no objeto. Se `en.ts` estiver incompleto, o type check (`astro check`) falha.
-- **i18n:** duas páginas estáticas reais. O `PT | EN` é um `<a>` para a rota equivalente. O idioma escolhido fica salvo em `localStorage` só por conveniência, **sem redirecionamento automático**. Cada página tem `<html lang>`, `hreflang` alternado e `canonical` próprios.
+- **i18n:** duas páginas estáticas reais. O `PT | EN` é um `<a>` para a rota equivalente. Sem redirecionamento automático e sem `localStorage` (sem redirect, guardar a escolha não teria uso). Cada página tem `<html lang>`, `hreflang` alternado e `canonical` próprios.
 - **CV para download:** PT baixa `/cv-pt.pdf` e EN baixa `/cv-en.pdf`, com o atributo `download`.
 - **SEO:** `<title>` "Matheus Amon · Engenheiro de Software, Dados e IA" / "Matheus Amon · Software Engineer, Data & AI", meta description por idioma, Open Graph e Twitter card, e JSON-LD `ProfilePage` + `Person` (jobTitle, knowsAbout com as keywords do CV, sameAs com LinkedIn e GitHub).
+- **Base path:** todo link interno passa por `withBase()` (usa `import.meta.env.BASE_URL`), então renomear o repositório só exige definir `base` no config.
 - **Slot futuro:** o tipo `CV` tem `writing?: Post[]` opcional; quando houver conteúdo, a seção "Escritos" aparece.
 
 ## 7. Deploy
@@ -187,5 +189,5 @@ cv-landingpage/
 
 ## 9. Pendências do Matheus
 
-- Colocar `public/cv-pt.pdf` e `public/cv-en.pdf`, que vieram como anexo e não estão no disco.
+- ~~Colocar os PDFs~~: feito, copiados de `~/Documents` para `public/cv-pt.pdf` e `public/cv-en.pdf`.
 - Na outra máquina: criar o repositório, adicionar o remote, fazer o push e ativar o Pages.
