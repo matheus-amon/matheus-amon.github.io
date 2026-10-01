@@ -32,7 +32,7 @@ describe.each(PAGE_KEYS)('assets e peso (%s)', (key) => {
     const fonts = [...new Set([...css.matchAll(/url\(["']?([^)"']*-latin-(?:wght|400)-normal[^)"']*\.woff2)["']?\)/g)].map((m) => m[1]))];
 
     expect(fonts.length).toBe(2);
-    const gz = (data: string | Buffer) => Bun.gzipSync(typeof data === 'string' ? Buffer.from(data) : data).byteLength;
+    const gz = (data: string | Uint8Array) => Bun.gzipSync(typeof data === 'string' ? data : new Uint8Array(data)).byteLength;
     const srcset = html.match(/<img\b[^>]*srcset="([^"]+)"/)?.[1] ?? '';
     const photo = Math.max(...srcset.split(',').map((part) => sizeOf(part.trim().split(/\s+/)[0])));
     const parts = {
