@@ -6,7 +6,7 @@ export const pt: CV = {
     title: 'Matheus Amon · Engenheiro de Software, Dados e IA',
     description:
       'Engenheiro de Software, Dados e IA. Pipelines ETL/ELT, modelagem com dbt, AWS serverless, RAG e agentes de IA em produção.',
-    ogImage: '/og-pt.png',
+    ogImage: '/og-pt.jpg',
     ogAlt: 'Matheus Amon Marçal — Engenheiro de Software, Dados e IA',
   },
   ui: {

@@ -1,12 +1,8 @@
 import { describe, expect, test } from 'bun:test';
-import { existsSync, readFileSync } from 'node:fs';
+import { existsSync, readFileSync, statSync } from 'node:fs';
+import sharp from 'sharp';
 import { PAGE_KEYS, cssFor, distFile, readPage, sizeOf } from './helpers';
 
-function pngSize(path: string): { width: number; height: number } {
-  const buf = readFileSync(path);
-  expect(buf.subarray(1, 4).toString('ascii')).toBe('PNG');
-  return { width: buf.readUInt32BE(16), height: buf.readUInt32BE(20) };
-}
 
 describe('arquivos estáticos', () => {
   test('robots.txt e favicon', () => {
@@ -18,8 +14,11 @@ describe('arquivos estáticos', () => {
 describe.each(PAGE_KEYS)('assets e peso (%s)', (key) => {
   const html = readPage(key);
 
-  test('imagem OG existe e tem 1200×630', () => {
-    expect(pngSize(distFile(`/og-${key}.png`))).toEqual({ width: 1200, height: 630 });
+  test('imagem OG é JPEG 1200×630 com menos de 300 KB (limite prático do WhatsApp)', async () => {
+    const file = distFile(`/og-${key}.jpg`);
+    const { format, width, height } = await sharp(file).metadata();
+    expect({ format, width, height }).toEqual({ format: 'jpeg', width: 1200, height: 630 });
+    expect(statSync(file).size).toBeLessThan(300 * 1024);
   });
 
   test('primeira carga < 150 KB (HTML/CSS/JS gzip + fontes + maior foto)', () => {

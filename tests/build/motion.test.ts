@@ -56,6 +56,12 @@ describe.each(PAGE_KEYS)('movimento (%s)', (key) => {
     expect(hidden.filter((s) => !s.includes('.js') && !s.includes('.motion'))).toEqual([]);
   });
 
+  test('menu mobile só se esconde depois que o script do menu montou (.menu-ready)', () => {
+    expect(css).not.toMatch(/\.js \.(nav-list|menu-toggle)/);
+    expect(css).toMatch(/\.menu-ready \.nav-list\{display:none/);
+    expect(css).toMatch(/\.menu-ready \.menu-toggle\{/);
+  });
+
   test('impressão mostra tudo', () => {
     expect(css).toMatch(/@media\s+print/);
   });
@@ -69,6 +75,7 @@ describe.each(PAGE_KEYS)('movimento (%s)', (key) => {
     const all = bodies.join('\n');
     expect(all).toContain('IntersectionObserver');
     expect(all).toMatch(/classList\.add\(["'`]motion["'`]\)/);
+    expect(all).toMatch(/classList\.add\(["'`]menu-ready["'`]\)/);
     expect(Buffer.byteLength(all)).toBeLessThan(3 * 1024);
   });
 });

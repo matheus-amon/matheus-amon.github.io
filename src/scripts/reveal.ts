@@ -14,6 +14,8 @@ function setupMenu(): void {
   list.addEventListener('click', (event) => {
     if ((event.target as HTMLElement).closest('a')) setOpen(false);
   });
+  // Só troca a navegação pelo botão depois que o clique já funciona.
+  document.documentElement.classList.add('menu-ready');
 }
 
 function setupReveal(): void {

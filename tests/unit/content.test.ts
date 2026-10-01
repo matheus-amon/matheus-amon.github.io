@@ -78,7 +78,7 @@ describe.each([
     expect(cv.person.linkedin).toBe('https://www.linkedin.com/in/matheus-amon/');
     expect(cv.person.github).toBe('https://github.com/matheus-amon');
     expect(cv.person.cvPdf).toBe(`/cv-${locale}.pdf`);
-    expect(cv.meta.ogImage).toBe(`/og-${locale}.png`);
+    expect(cv.meta.ogImage).toBe(`/og-${locale}.jpg`);
   });
 
   test('só a primeira posição é atual e cada uma tem 3 bullets', () => {

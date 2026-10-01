@@ -29,10 +29,10 @@ for (const locale of LOCALES) {
     .resize(PHOTO_WIDTH, HEIGHT, { fit: 'cover', position: 'north' })
     .toBuffer();
 
-  const out = `public/og-${locale}.png`;
+  const out = `public/og-${locale}.jpg`;
   await sharp(Buffer.from(svg))
     .composite([{ input: photo, left: WIDTH - PHOTO_WIDTH, top: 0 }])
-    .png({ compressionLevel: 9 })
+    .jpeg({ quality: 82, mozjpeg: true })
     .toFile(out);
   console.log(`✓ ${out}`);
 }

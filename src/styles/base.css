@@ -313,7 +313,7 @@ a {
     margin-left: auto;
   }
 
-  .js .menu-toggle {
+  .menu-ready .menu-toggle {
     display: inline-flex;
     align-items: center;
     height: 34px;
@@ -327,18 +327,18 @@ a {
     cursor: pointer;
   }
 
-  .js .nav-list {
+  .menu-ready .nav-list {
     display: none;
   }
 
-  .js .nav-list.is-open {
+  .menu-ready .nav-list.is-open {
     display: flex;
     flex-direction: column;
     gap: 4px;
     padding: 8px 0 16px;
   }
 
-  .js .nav-list.is-open a {
+  .menu-ready .nav-list.is-open a {
     display: block;
     padding: 8px 0;
     font-size: 1rem;

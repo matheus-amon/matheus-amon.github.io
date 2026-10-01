@@ -39,7 +39,8 @@ describe.each(PAGE_KEYS)('head (%s)', (key) => {
   });
 
   test('Open Graph com URL absoluta', () => {
-    expect(html).toContain(`<meta property="og:image" content="${SITE}/og-${key}.png"`);
+    expect(html).toContain(`<meta property="og:image" content="${SITE}/og-${key}.jpg"`);
+    expect(html).toContain('<meta property="og:image:type" content="image/jpeg"');
     expect(html).toContain(`<meta property="og:url" content="${exp.canonical}"`);
     expect(html).toContain(`<meta property="og:locale" content="${exp.ogLocale}"`);
     expect(html).toContain('<meta name="twitter:card" content="summary_large_image"');
