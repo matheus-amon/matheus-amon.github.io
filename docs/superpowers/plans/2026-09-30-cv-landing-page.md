@@ -232,6 +232,7 @@ describe.each([
 
   test('projetos aprovados', () => {
     expect(cv.projects.map((p) => p.name)).toEqual([
+      'Iceberg Lakehouse',
       'Data Warehouse stack',
       'amon-claw',
       'One Billion Row Challenge',
@@ -481,6 +482,13 @@ export const pt: CV = {
   },
   projects: [
     {
+      name: 'Iceberg Lakehouse',
+      description:
+        'Lakehouse de streaming sobre Apache Iceberg: Kafka/Redpanda → Flink → Iceberg → Trino, com observabilidade de qualidade de dados.',
+      tags: ['Kafka', 'Redpanda', 'Flink', 'Iceberg', 'Trino'],
+      links: [{ label: 'iceberg-lakehouse', href: 'https://github.com/matheus-amon/iceberg-lakehouse' }],
+    },
+    {
       name: 'Data Warehouse stack',
       description:
         'Data warehouse local de ponta a ponta: ambiente com Terraform e docker-compose, orquestração com Airflow e transformação com dbt.',
@@ -646,6 +654,13 @@ export const en: CV = {
       "From Young Apprentice to Loss Prevention Assistant, serving as interim team lead. That's where I started with data: Excel and Power BI reports for the distribution center.",
   },
   projects: [
+    {
+      name: 'Iceberg Lakehouse',
+      description:
+        'Streaming lakehouse on Apache Iceberg: Kafka/Redpanda → Flink → Iceberg → Trino, with data-quality observability.',
+      tags: ['Kafka', 'Redpanda', 'Flink', 'Iceberg', 'Trino'],
+      links: [{ label: 'iceberg-lakehouse', href: 'https://github.com/matheus-amon/iceberg-lakehouse' }],
+    },
     {
       name: 'Data Warehouse stack',
       description:
@@ -2455,9 +2470,9 @@ const { cv } = Astro.props;
   gap: 16px;
 }
 
-@media (min-width: 880px) {
+@media (min-width: 720px) {
   .cards {
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(2, 1fr);
   }
 }
 
@@ -3276,7 +3291,7 @@ mkdir -p /tmp/cv-shots
 (Ao executar, use o scratchpad da sessão no lugar de `/tmp/cv-shots`.)
 
 Abrir cada PNG e conferir:
-- **Desktop:** foto à direita, timeline com os 3 cargos e a linha turquesa, 3 cards lado a lado, faixas escuras em Stack e Contato.
+- **Desktop:** foto à direita, timeline com os 3 cargos e a linha turquesa, 4 cards em grade 2×2, faixas escuras em Stack e Contato.
 - **Celular (390 px):** sem scroll horizontal (nada cortado à direita), foto acima do texto, header numa linha com PT|EN, CV e Menu.
 - **Sem JS:** todo o conteúdo visível, nada em branco, timeline cheia e navegação visível abaixo do header.
 

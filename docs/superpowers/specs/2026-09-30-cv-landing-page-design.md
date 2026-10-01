@@ -71,10 +71,11 @@ Os itens sem número (agentes de IA e conciliação) ficam qualitativos de prop�
 
 **Redepharma (fev/2021 – abr/2024), em uma linha:** "De Jovem Aprendiz a Assistente de Prevenção de Perdas, com gestão interina da equipe. Foi onde comecei com dados: relatórios em Excel e Power BI para o centro de distribuição."
 
-### 3.3 Projetos (3 cards + link "ver tudo no GitHub")
+### 3.3 Projetos (4 cards em grade 2×2 + link "ver tudo no GitHub")
 
 | Projeto | Descrição (PT) | Tags | Links |
 |---|---|---|---|
+| Iceberg Lakehouse | Lakehouse de streaming sobre Apache Iceberg: Kafka/Redpanda → Flink → Iceberg → Trino, com observabilidade de qualidade de dados. | Kafka, Redpanda, Flink, Iceberg, Trino | `iceberg-lakehouse` |
 | Data Warehouse stack | Data warehouse local de ponta a ponta: ambiente com Terraform e docker-compose, orquestração com Airflow e transformação com dbt. | Terraform, Docker, Airflow, dbt, Python | `dwh-config-local`, `dwh-airflow`, `dwh-dbt` |
 | amon-claw | Runtime de agente de IA pessoal em Python, com Docker Compose e documentação em MkDocs. | Python, Docker, LLM, MkDocs | `amon-claw` |
 | One Billion Row Challenge | Leitura e processamento de 1 bilhão de linhas com Polars e DuckDB, comparando desempenho. Desafio da Jornada de Dados. | Python, Polars, DuckDB | `one-billion-row-challenge` |
