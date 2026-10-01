@@ -112,10 +112,10 @@ export const en: CV = {
       links: [{ label: 'podcast', href: 'https://github.com/matheus-amon/podcast' }],
     },
     {
-      name: 'Data Warehouse stack',
+      name: 'SaaS Metrics Warehouse',
       description:
-        'End-to-end local data warehouse: environment with Terraform and docker-compose, orchestration with Airflow and transformation with dbt.',
-      tags: ['Terraform', 'Docker', 'Airflow', 'dbt', 'Python'],
+        'B2B SaaS product-analytics warehouse in three repos: a generator for 1M synthetic product events, a dbt project with a star schema and revenue, retention, adoption and account-health marts behind 300 tests, and Airflow 3 with Cosmos running it and consuming the mart as an Asset.',
+      tags: ['dbt', 'Airflow', 'Postgres', 'Python', 'Docker'],
       links: [
         { label: 'dwh-config-local', href: 'https://github.com/matheus-amon/dwh-config-local' },
         { label: 'dwh-airflow', href: 'https://github.com/matheus-amon/dwh-airflow' },

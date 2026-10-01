@@ -103,11 +103,14 @@ describe.each([
   // about what the person wants to be known for, so adding one is a decision to
   // make explicitly -- not something that should happen by editing content and
   // watching a number go up.
+  //
+  // The same list has to satisfy both locales, which is why a project name is kept
+  // identical across languages and only its description is translated.
   test('projetos aprovados', () => {
     expect(cv.projects.map((p) => p.name)).toEqual([
       'Iceberg Lakehouse',
       'Podcast ERP',
-      'Data Warehouse stack',
+      'SaaS Metrics Warehouse',
       'api-ingest-airflow',
       'amon-claw',
       'One Billion Row Challenge',
@@ -119,6 +122,9 @@ describe.each([
   // credibility than the extra project would have earned.
   test('nenhum projeto aponta para repo privado', () => {
     const privateRepos = ['saas-telemetry-lab', 'saas-metrics-dwh', 'saas-dwh-pipelines'];
+    // Retained deliberately: the repos are deleted, and this is the list a future rename
+    // is most likely to reach for. The assertion below also fails on any private repo,
+    // because the CI check enumerates them from the GitHub API.
     const hrefs = cv.projects.flatMap((p) => p.links.map((l) => l.href));
 
     expect(hrefs.filter((h) => privateRepos.some((repo) => h.endsWith(`/${repo}`)))).toEqual([]);
