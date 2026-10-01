@@ -72,6 +72,18 @@ describe.each([
     expect(hrefs.filter((h) => !h.startsWith('https://'))).toEqual([]);
   });
 
+  // Guards the accident that actually happened while writing these cards: the
+  // label has to match the repository it points at. A card linking three
+  // different repos under one label is indistinguishable from a broken build.
+  test('o rótulo de cada link é o nome do repositório', () => {
+    for (const project of cv.projects) {
+      for (const link of project.links) {
+        const repo = link.href.replace('https://github.com/matheus-amon/', '');
+        expect(link.label, `${project.name}: rótulo "${link.label}" != repo "${repo}"`).toBe(repo);
+      }
+    }
+  });
+
   test('dados pessoais fixos', () => {
     expect(cv.person.name).toBe('Matheus Amon Marçal');
     expect(cv.person.email).toBe('matheus.amon@outlook.com');
@@ -87,13 +99,41 @@ describe.each([
     expect(roles.map((r) => r.bullets.length)).toEqual([3, 3, 3]);
   });
 
+  // Deliberately a fixed list rather than a count. A card on a CV is a claim
+  // about what the person wants to be known for, so adding one is a decision to
+  // make explicitly -- not something that should happen by editing content and
+  // watching a number go up.
   test('projetos aprovados', () => {
     expect(cv.projects.map((p) => p.name)).toEqual([
       'Iceberg Lakehouse',
+      'Podcast ERP',
       'Data Warehouse stack',
+      'api-ingest-airflow',
       'amon-claw',
       'One Billion Row Challenge',
     ]);
+  });
+
+  // A card must not link to a private repository. A 404 in a recruiter's
+  // browser reads as a broken page, and a broken link on a CV costs more
+  // credibility than the extra project would have earned.
+  test('nenhum projeto aponta para repo privado', () => {
+    const privateRepos = ['saas-telemetry-lab', 'saas-metrics-dwh', 'saas-dwh-pipelines'];
+    const hrefs = cv.projects.flatMap((p) => p.links.map((l) => l.href));
+
+    expect(hrefs.filter((h) => privateRepos.some((repo) => h.endsWith(`/${repo}`)))).toEqual([]);
+  });
+
+  // Every card has to actually link somewhere on the profile.
+  test('todo projeto tem pelo menos um link para o repositório', () => {
+    for (const project of cv.projects) {
+      expect(project.links.length, `${project.name} sem links`).toBeGreaterThan(0);
+      for (const link of project.links) {
+        expect(link.href, `${project.name} -> ${link.label}`).toMatch(
+          /^https:\/\/github\.com\/matheus-amon\//,
+        );
+      }
+    }
   });
 });
 
