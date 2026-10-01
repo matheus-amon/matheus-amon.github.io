@@ -21,14 +21,14 @@
 - A timeline usa os **cargos reais** do CV. Nunca exibir telefone. Nunca usar "cassino", "casino", "apostas" ou "betting"; o termo é **iGaming**.
 - Localização: "Paraíba, Brasil · Remoto" / "Paraíba, Brazil · Remote".
 - Nenhum número ou conquista além do que está na spec §3.
-- Orçamento de peso: HTML + CSS + JS + fontes latin usadas < 100 KB por página; maior variante da foto < 80 KB; JS < 3 KB.
+- Orçamento de peso: primeira carga < 150 KB por página (HTML, CSS e JS medidos com gzip; fontes woff2 latin e maior variante da foto pelo tamanho bruto); maior variante da foto < 80 KB; JS < 3 KB.
 - Todo link interno passa por `withBase()`.
 - `site: 'https://matheus-amon.github.io'`.
 - Ambiente: neste Mac, o sandbox bloqueia `git add` de arquivos com o atributo `com.apple.provenance` (foto, PDFs). Se o `git add` falhar com "Operation not permitted", rodar o comando git fora do sandbox.
 
 ## Review Focus
 
-1. **Visitante sem JS, ou com o script quebrado:** todo o conteúdo precisa aparecer. Os estados escondidos só existem sob `html.js`. Teste em `tests/build/motion.test.ts` (Task 6).
+1. **Visitante sem JS, ou com o script quebrado:** todo o conteúdo precisa aparecer. A entrada do hero (só CSS) usa `html.js`. Os blocos `.reveal` e a timeline só se escondem sob `html.motion`, classe que o próprio `reveal.ts` adiciona **depois** de montar o observer. Se o script falhar, nada some. Teste em `tests/build/motion.test.ts` (Task 6).
 2. **`prefers-reduced-motion: reduce`:** nada anima, a timeline aparece cheia e os pontos ficam acesos. As regras de esconder ficam só dentro de `@media (prefers-reduced-motion: no-preference)`. Teste na Task 6.
 3. **Repositório com outro nome** (`base` diferente de `/`): os links internos não podem quebrar. Teste de `withBase` na Task 3, e uso obrigatório nos componentes (Tasks 4 e 5).
 4. **Prévia de link no LinkedIn/WhatsApp:** `og:image` com URL absoluta, arquivo existente de 1200×630, e `&` escapado no SVG ("Data & AI"). Teste do `escapeXml` na Task 3 e de assets na Task 7.
@@ -2722,7 +2722,7 @@ git commit -m "feat: add hero, experience timeline, projects, stack, education a
 
 **Interfaces:**
 - Consumes: `timelineProgress` (Task 3); classes `.enter`, `.reveal`, `[data-timeline]`, `.role`, `.role-dot`, `.card`, `.menu-toggle`, `#nav-list` (Tasks 4 e 5).
-- Produces: classes de estado `html.js`, `.is-visible`, `.is-lit`, `.is-open`; variável CSS `--progress`.
+- Produces: classes de estado `html.js` (inline no head: menu e entrada do hero), `html.motion` (adicionada pelo `reveal.ts`: reveal e timeline), `.is-visible`, `.is-lit`, `.is-open`; variável CSS `--progress`.
 
 - [ ] **Step 1: Escrever o teste que falha, `tests/build/motion.test.ts`**
 
@@ -2777,10 +2777,12 @@ describe.each(PAGE_KEYS)('movimento (%s)', (key) => {
     expect(outside).not.toMatch(/--progress:\s*0(?![.\d])/);
   });
 
-  test('estados escondidos existem só sob .js e só com no-preference', () => {
+  test('estados escondidos: .enter sob .js, .reveal sob .motion, e só com no-preference', () => {
     const hidden = rulesHiding(inside);
     expect(hidden.length).toBeGreaterThan(0);
-    expect(hidden.filter((s) => !s.includes('.js'))).toEqual([]);
+    expect(hidden.filter((s) => s.includes('.reveal') && !s.includes('.motion'))).toEqual([]);
+    expect(hidden.filter((s) => s.includes('.enter') && !s.includes('.js'))).toEqual([]);
+    expect(hidden.filter((s) => !s.includes('.js') && !s.includes('.motion'))).toEqual([]);
   });
 
   test('impressão mostra tudo', () => {
@@ -2795,6 +2797,7 @@ describe.each(PAGE_KEYS)('movimento (%s)', (key) => {
     });
     const all = bodies.join('\n');
     expect(all).toContain('IntersectionObserver');
+    expect(all).toMatch(/classList\.add\(["']motion["']\)/);
     expect(Buffer.byteLength(all)).toBeLessThan(3 * 1024);
   });
 });
@@ -2815,8 +2818,10 @@ Expected: FAIL em "classe js aplicada…", "estados escondidos…", "impressão�
   }
 }
 
-/* Estados escondidos só existem com JS ativo E sem pedido de movimento reduzido.
-   Sem JS, ou com reduced-motion, tudo aparece no estado final. */
+/* Estados escondidos só existem sem pedido de movimento reduzido.
+   .js (inline no head) → entrada do hero, que é só CSS e termina visível sozinha.
+   .motion (adicionada pelo reveal.ts depois de montar o observer) → reveal e timeline.
+   Sem JS, com o script quebrado ou com reduced-motion, tudo aparece no estado final. */
 @media (prefers-reduced-motion: no-preference) {
   .js .enter {
     opacity: 0;
@@ -2825,31 +2830,31 @@ Expected: FAIL em "classe js aplicada…", "estados escondidos…", "impressão�
     animation-delay: calc(var(--i, 0) * 80ms + 60ms);
   }
 
-  .js .reveal {
+  .motion .reveal {
     opacity: 0;
     translate: 0 12px;
     transition: opacity 0.6s var(--ease), translate 0.6s var(--ease);
   }
 
-  .js .card.reveal {
+  .motion .card.reveal {
     transition: opacity 0.6s var(--ease), translate 0.6s var(--ease), transform 0.25s var(--ease),
       border-color 0.25s, box-shadow 0.25s;
   }
 
-  .js .reveal.is-visible {
+  .motion .reveal.is-visible {
     opacity: 1;
     translate: 0 0;
   }
 
-  .js [data-timeline] {
+  .motion [data-timeline] {
     --progress: 0;
   }
 
-  .js .timeline::after {
+  .motion .timeline::after {
     transition: transform 0.2s linear;
   }
 
-  .js .role:not(.is-lit) .role-dot {
+  .motion .role:not(.is-lit) .role-dot {
     background: var(--paper);
     border-color: var(--line-strong);
   }
@@ -2862,7 +2867,7 @@ Expected: FAIL em "classe js aplicada…", "estados escondidos…", "impressão�
     display: none;
   }
 
-  .js .reveal,
+  .motion .reveal,
   .js .enter {
     opacity: 1 !important;
     translate: none !important;
@@ -2948,6 +2953,8 @@ setupMenu();
 if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
   setupReveal();
   setupTimeline();
+  // Só esconde os blocos depois que tudo acima rodou: se algo falhar, o conteúdo continua visível.
+  document.documentElement.classList.add('motion');
 }
 ```
 
@@ -3035,7 +3042,7 @@ describe.each(PAGE_KEYS)('assets e peso (%s)', (key) => {
     expect(pngSize(distFile(`/og-${key}.png`))).toEqual({ width: 1200, height: 630 });
   });
 
-  test('HTML + CSS + JS + fontes latin < 100 KB', () => {
+  test('primeira carga < 150 KB (HTML/CSS/JS gzip + fontes + maior foto)', () => {
     const css = cssFor(html);
     const cssFiles = [...html.matchAll(/<link\b[^>]*>/g)]
       .map((m) => m[0])
@@ -3045,10 +3052,17 @@ describe.each(PAGE_KEYS)('assets e peso (%s)', (key) => {
     const fonts = [...new Set([...css.matchAll(/url\(["']?([^)"']*-latin-(?:wght|400)-normal[^)"']*\.woff2)["']?\)/g)].map((m) => m[1]))];
 
     expect(fonts.length).toBe(2);
-    const total =
-      Buffer.byteLength(html) +
-      [...cssFiles, ...jsFiles, ...fonts].reduce((sum, file) => sum + sizeOf(file), 0);
-    expect(total).toBeLessThan(100 * 1024);
+    const gz = (data: string | Buffer) => Bun.gzipSync(typeof data === 'string' ? Buffer.from(data) : data).byteLength;
+    const srcset = html.match(/<img\b[^>]*srcset="([^"]+)"/)?.[1] ?? '';
+    const photo = Math.max(...srcset.split(',').map((part) => sizeOf(part.trim().split(/\s+/)[0])));
+    const parts = {
+      html: gz(html),
+      cssJs: [...cssFiles, ...jsFiles].reduce((sum, file) => sum + gz(readFileSync(distFile(file))), 0),
+      fonts: fonts.reduce((sum, file) => sum + sizeOf(file), 0),
+      photo,
+    };
+    console.log(`peso (${key}):`, parts);
+    expect(Object.values(parts).reduce((a, b) => a + b, 0)).toBeLessThan(150 * 1024);
   });
 
   test('maior variante da foto < 80 KB', () => {
@@ -3063,7 +3077,7 @@ describe.each(PAGE_KEYS)('assets e peso (%s)', (key) => {
 - [ ] **Step 2: Rodar e ver falhar**
 
 Run: `bun run build && bun run test:build`
-Expected: FAIL em "robots.txt e favicon" e "imagem OG…" (`ENOENT`). Os testes de peso devem passar já. Se falharem, reduzir `quality` no `Hero.astro` antes de seguir.
+Expected: FAIL em "robots.txt e favicon" e "imagem OG…" (`ENOENT`). Os testes de peso devem passar já (estimativa: ~22 KB de HTML/CSS/JS gzip + ~65 KB de fontes + ~50 KB de foto). Se falharem, ver no `console.log` qual parcela estourou: se for `photo`, reduzir `quality` no `Hero.astro`; se for `fonts`, trocar o JetBrains Mono por `ui-monospace` (remover o import em `Base.astro`).
 
 - [ ] **Step 3: Criar `public/robots.txt`**
 

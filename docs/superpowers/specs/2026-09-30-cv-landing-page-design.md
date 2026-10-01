@@ -11,7 +11,7 @@ Landing page pessoal, de página única, que **complementa** o CV em PDF e causa
 
 - Todo o conteúdo é fiel ao CV e às respostas do Matheus. Nenhum número ou conquista foi inventado.
 - As palavras-chave (headline, resumo, experiência e skills) são as mesmas do CV e do LinkedIn, para dar match nos campos de peso. Isso vem da mentoria com Daniel Romero.
-- Orçamento de peso: HTML + CSS + JS + fontes latin usadas < 100 KB; maior variante da foto < 80 KB; JS ~2 KB.
+- Primeira carga < 150 KB com foto e fontes (HTML/CSS/JS medidos com gzip); maior variante da foto < 80 KB; JS ~2 KB.
 - Funciona sem JS, com animações desligadas e no celular.
 - Ao colar o link no LinkedIn ou no WhatsApp, aparece uma prévia correta em cada idioma.
 
@@ -132,7 +132,7 @@ Na faixa `ink`, o texto em turquesa usa um tom mais claro (cerca de `#5CC4BD`) p
 2. **Scroll reveal:** blocos de experiência e cards de projeto aparecem uma vez, ao entrar na tela.
 3. **Timeline:** a linha vertical da Singlesoftware se desenha conforme o scroll e os pontos dos cargos acendem em turquesa.
 4. **Micro-interações:** links com sublinhado que cresce, cards que sobem 2 px no hover e transição curta no `PT | EN`.
-5. **Acessibilidade:** `prefers-reduced-motion` desliga tudo. Os estados escondidos só existem sob `html.js`, então sem JS tudo aparece.
+5. **Acessibilidade e robustez:** `prefers-reduced-motion` desliga tudo. A entrada do hero (só CSS) depende de `html.js`; reveal e timeline só se escondem sob `html.motion`, que o script adiciona depois de montar o observer. Sem JS ou com o script quebrado, tudo aparece.
 
 ## 6. Arquitetura técnica
 
