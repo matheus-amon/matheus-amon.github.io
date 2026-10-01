@@ -3,6 +3,7 @@ import '@fontsource-variable/inter-tight/wght.css';
 import '@fontsource/jetbrains-mono/latin-400.css';
 import '../styles/base.css';
 import '../styles/sections.css';
+import '../styles/motion.css';
 import type { CV } from '../content/types';
 import { LOCALES, htmlLang, ogLocale, paths } from '../lib/i18n';
 import { personJsonLd, serializeJsonLd } from '../lib/seo';
@@ -26,6 +27,7 @@ const jsonLd = serializeJsonLd(personJsonLd(cv, canonical, ogImage));
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script is:inline>document.documentElement.classList.add('js');</script>
     <title>{cv.meta.title}</title>
     <meta name="description" content={cv.meta.description} />
     <meta name="author" content={cv.person.name} />
@@ -52,5 +54,8 @@ const jsonLd = serializeJsonLd(personJsonLd(cv, canonical, ogImage));
   <body>
     <a class="skip" href="#main">{cv.ui.skipToContent}</a>
     <slot />
+    <script>
+      import '../scripts/reveal.ts';
+    </script>
   </body>
 </html>

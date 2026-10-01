@@ -1,0 +1,68 @@
+@keyframes enter {
+  to {
+    opacity: 1;
+    translate: 0 0;
+  }
+}
+
+/* Estados escondidos só existem sem pedido de movimento reduzido.
+   .js (inline no head) → entrada do hero, que é só CSS e termina visível sozinha.
+   .motion (adicionada pelo reveal.ts depois de montar o observer) → reveal e timeline.
+   Sem JS, com o script quebrado ou com reduced-motion, tudo aparece no estado final. */
+@media (prefers-reduced-motion: no-preference) {
+  .js .enter {
+    opacity: 0;
+    translate: 0 8px;
+    animation: enter 0.7s var(--ease) forwards;
+    animation-delay: calc(var(--i, 0) * 80ms + 60ms);
+  }
+
+  .motion .reveal {
+    opacity: 0;
+    translate: 0 12px;
+    transition: opacity 0.6s var(--ease), translate 0.6s var(--ease);
+  }
+
+  .motion .card.reveal {
+    transition: opacity 0.6s var(--ease), translate 0.6s var(--ease), transform 0.25s var(--ease),
+      border-color 0.25s, box-shadow 0.25s;
+  }
+
+  .motion .reveal.is-visible {
+    opacity: 1;
+    translate: 0 0;
+  }
+
+  .motion [data-timeline] {
+    --progress: 0;
+  }
+
+  .motion .timeline::after {
+    transition: transform 0.2s linear;
+  }
+
+  .motion .role:not(.is-lit) .role-dot {
+    background: var(--paper);
+    border-color: var(--line-strong);
+  }
+}
+
+@media print {
+  .site-header,
+  .skip,
+  .menu-toggle {
+    display: none;
+  }
+
+  .motion .reveal,
+  .js .enter {
+    opacity: 1 !important;
+    translate: none !important;
+    animation: none !important;
+  }
+
+  .band-dark {
+    background: #fff;
+    color: #000;
+  }
+}
